@@ -7,13 +7,13 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class DropdownComponent implements OnInit {
   // Angular variables
-  @Input() options = [];
-  @Input() title: any;
+  @Input() options: any[] = [];
+  @Input() title: string = '';
   @Output() selectChange = new EventEmitter();
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   // Page events
   onChangeValue = (e: any) => {
