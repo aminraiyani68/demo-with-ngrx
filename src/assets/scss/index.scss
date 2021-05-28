@@ -1,0 +1,17 @@
+table{
+    width: 100%;
+
+    tr{
+        td{
+            background-color: #f1f1f1;
+        }
+    }
+}
+
+.selection-dashboard{
+    padding: 2rem;
+
+    app-dropdown{
+        margin-right: 2rem;
+    }
+}
