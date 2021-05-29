@@ -1,76 +1,64 @@
-import { Component, Input, OnInit } from '@angular/core';
-
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AppState } from './store/reducers';
+import { Store } from '@ngrx/store';
+import { Region } from './store/regions/model/region.model';
+import { Country } from './store/countries/model/country.model';
+import { countryActionTypes } from './store/countries/country.actions';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+
   // Angular variables
-  regionOptions = [
-    {
-      display: 'Europe',
-      value: 'europe',
-      id: 1,
-    },
-    {
-      display: 'Asia',
-      value: 'asia',
-      id: 2,
-    },
-  ];
-
-  countryOptions = [
-    {
-      name: 'India',
-      display: 'India',
-      value: 'india',
-      capital: 'New Delhi',
-      population: 1295210000,
-      currencies: [
-        {
-          code: 'INR',
-          name: 'Indian rupee',
-          symbol: '₹',
-        },
-      ],
-      flag: 'https://restcountries.eu/data/ind.svg',
-    },
-    {
-      name: 'Indonesia',
-      display: 'Indonesia',
-      value: 'indonesia',
-      capital: 'Jakarta',
-      population: 258705000,
-      currencies: [
-        {
-          "code": "IDR",
-          "name": "Indonesian rupiah",
-          "symbol": "Rp"
-        },
-      ],
-      flag: 'https://restcountries.eu/data/idn.svg',
-    },
-  ];
-
+  regionList: Region[] = [];
+  countryList: Country[] = [];
   selectedCountry: any = null;
+  countryLoading = false;
 
-  constructor() {}
+  constructor(private store: Store<AppState>) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.initStoreSubscribe()
+  }
 
+  initStoreSubscribe = () => {
+    this.store.select(appState => appState.Region.regions).subscribe(regions => {
+      this.regionList = regions;
+    });
+
+    this.store.select(appState => appState.Country.loading).subscribe(loading => {
+      this.countryLoading = loading;
+    });
+
+    this.store.select(appState => appState.Country.countries).subscribe(countries => {
+      this.countryList = countries;
+    });
+
+  }
 
   displayedColumns: string[] = ['name', 'capital', 'population', 'currencies', 'flag'];
-  dataSource : any = [];
+  dataSource: any = [];
 
   // Page events
   onRegionChange = (e: any) => {
+    const region = e.value;
+    this.selectedCountry = null;
+    this.dataSource = [];
+    this.store.dispatch(countryActionTypes.loadCountries({ region }));
   };
 
   onCountryChange = (e: any) => {
-    this.selectedCountry = this.countryOptions.find((co) => {
-      return co.value === e.value;
+    const numericCode = e.value;
+    this.selectedCountry = this.countryList.find((co) => {
+      return co.numericCode === numericCode;
     });
     this.dataSource = [this.selectedCountry];
   };
+
+  ngOnDestroy() {
+    // we can un subscribe to observable subscription here, since it is just demo I didn't implement that
+  }
 }

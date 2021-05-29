@@ -6,9 +6,10 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./dropdown.component.scss'],
 })
 export class DropdownComponent implements OnInit {
-  // Angular variables
   @Input() options: any[] = [];
   @Input() title: string = '';
+  @Input() displayKey: string = '';
+  @Input() valueKey: string = '';
   @Output() selectChange = new EventEmitter();
 
   constructor() { }
