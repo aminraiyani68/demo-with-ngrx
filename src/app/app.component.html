@@ -1,6 +1,13 @@
 <router-outlet></router-outlet>
 
 <div class="selection-dashboard">
+
+  <div class="loader">
+    <div *ngIf="countryLoading" >
+      Loading
+    </div>  
+  </div>
+
   <app-dropdown [options]="regionList" [displayKey]="'name'" [valueKey]="'value'" [title]="'Region'"
     (selectChange)="onRegionChange($event)">
   </app-dropdown>
@@ -8,10 +15,6 @@
   <app-dropdown [options]="countryList" [displayKey]="'name'" [valueKey]="'numericCode'" [title]="'Country'"
     (selectChange)="onCountryChange($event)">
   </app-dropdown>
-
-  <div *ngIf="countryLoading">
-    Loading
-  </div>
 </div>
 
 <div *ngIf="selectedCountry">
