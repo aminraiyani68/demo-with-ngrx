@@ -72,7 +72,31 @@ https://material.angular.io/guide/getting-started
 
 - In SCSS 7-1 pattern, index.scss main file which we call in styles.scss
 
+-   ngrx/effects => For API calls.
+    ngrx/schematics => Automatic generation code using command.
+    ngrx/store => To store data and use that data in different component.
+    ngrx/store-devtools => Just for development purpose to check the current state value and how state change.
+
 ## 4. Description of how the application work
 
+- In main folder need to install npm. Below is the command.
+npm install
+
+- And for run the application fire below command
+ng serve --port 4200 --poll 2000
+
+or simply npm start
+
+- And hint below url in the browser
+localhost://4200
+
+====== Application flow ======
+- Create a store folder src/app in that we have create reducers and index.ts file in which we are managing the multiple states.
+
+- We have countries and regions folders inside store folder.
+
+- Since we are having static regions we didn't implement effects, actions. We define initial state to regions array which we are using in app component.
+
+- Since we need to fetch dynamic countries based on selected region, we used effects for fetching the country list so it is in country.effects.ts . And we are using country list to bind the dropdown in app component.
 
 ## 5. If you ran out of time what else you would have done.
